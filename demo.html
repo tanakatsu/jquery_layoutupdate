@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>jQuery layoutUpdate Demo</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="css/jquery-ui.css" />
+  <script type="text/javascript" src="js/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
+  <script type="text/javascript" src="js/jquery.layoutUpdate.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      $("#peachBuscket").draggable();
+//        $("#peachBuscket").resizable();
+
+      $("#insertPeach").click(function() {
+        $("#peachBuscket").append("<img src='http://sozaing.com/wp-content/uploads/peach-150x150.png' />");
+        return false;
+      });
+
+      $("#removePeach").click(function() {
+        $("#peachBuscket img").first().remove();
+        return false;
+      });
+
+      $("#stop").click(function() {
+        $(".demo").removeClass("ui-layoutupdate-active");
+        return false;
+      });
+
+      $(".demo").layoutUpdate(function(obj, attrs) {
+        var msg = "";
+        $.each(attrs, function(i) {
+          switch (attrs[i]) {
+            case "width":
+              if (msg !== "") {
+                msg += ", ";
+              }
+              msg += "width => " + obj.width();
+              break;
+            case "height":
+              if (msg !== "") {
+                msg += ", ";
+              }
+              msg += "height => " + obj.height();
+              break;
+            case "left":
+              if (msg !== "") {
+                msg += ", ";
+              }
+              msg += "left => " + obj.offset().left;
+              break;
+            case "top":
+              if (msg !== "") {
+                msg += ", ";
+              }
+              msg += "top => " + obj.offset().top;
+              break;
+          }
+        });
+        $("#statusMsg" ).text(msg);
+      }, {pollingInterval: 1000});
+
+    });
+  </script>
+
+  <style>
+    body {
+      padding: 5px;
+    }
+
+    #statusMsg {
+      margin: 10px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <a id="insertPeach" href="#" class="btn btn-primary">Add a peach</a>
+    <a id="removePeach" href="#" class="btn btn-primary">Remove a peach</a>
+    <a id="stop" href="#" class="btn btn-primary">Stop polling</a>
+
+    <div id="statusMsg"> </div>
+
+    <br/>
+
+    <div style="width:320px;">
+      <span id="guideMsg">You can drag the box.</span>
+      <div id="peachBuscket" class="demo" style="background-color:pink;">
+        <img src='http://sozaing.com/wp-content/uploads/peach-150x150.png' />
+      </div>
+    </div>
+
+  </div>
+
+
+</body>
+
+</html>
